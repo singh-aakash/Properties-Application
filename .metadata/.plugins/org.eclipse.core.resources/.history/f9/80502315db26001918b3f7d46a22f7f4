@@ -1,0 +1,5 @@
+package com.cg.bookmymovie.movie.movie.entity;
+
+public class RunningTime {
+
+}
