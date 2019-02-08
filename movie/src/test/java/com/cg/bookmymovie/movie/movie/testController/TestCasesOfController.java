@@ -1,7 +1,6 @@
 package com.cg.bookmymovie.movie.movie.testController;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -24,7 +23,6 @@ import com.cg.bookmymovie.movie.movie.entity.Cast;
 import com.cg.bookmymovie.movie.movie.entity.Crew;
 import com.cg.bookmymovie.movie.movie.entity.Movie;
 import com.cg.bookmymovie.movie.movie.entity.RunningTime;
-import com.cg.bookmymovie.movie.movie.exception.IllegalDateException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -69,7 +67,7 @@ public class TestCasesOfController {
 		
 		movie2 = new Movie(103, "BAJIGAR", "Hema",
 				"URI chronicles the events of the surgical strike conducted " + "by the Indian military",
-				new RunningTime(2, 18), LocalDate.of(2019, Month.AUGUST, 13), castList, crewList);
+				new RunningTime(2, 18), LocalDate.of(2018, Month.AUGUST, 13), castList, crewList);
 		
 		movie3 = new Movie(105, "sun", "Shubham",
 				"URI chronicles the events of the surgical strike conducted " + "by the Indian military",
@@ -145,12 +143,14 @@ public class TestCasesOfController {
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 	}
 
-	/*
-	 * @Test //Test Cases of Wrong InPUT public void testAddMovieswithWrongValue() {
-	 * ResponseEntity responseEntity = testRestTemplate.postForEntity("/movies",
-	 * movie2, null); assertEquals(responseEntity.getStatusCode(),
-	 * HttpStatus.BAD_REQUEST); }
-	 */
+	
+	  @Test //Test Cases of Wrong InPUT
+	  @Ignore
+	  public void testAddMovieswithWrongValue() {
+	  ResponseEntity responseEntity = testRestTemplate.postForEntity("/movies", movie2, null); 
+	  assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST); 
+	  }
+	 
 
 	@Test // Test Cases Of delete the right one id
 	@Ignore
@@ -164,21 +164,22 @@ public class TestCasesOfController {
 	@Test // Test Cases of Delete the wrong Id
 	@Ignore
 	public void testDeleteInvalidId() {
-		testRestTemplate.delete("/movies/-104");
-		ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/movies/-104", String.class);
+		testRestTemplate.delete("/movies/104");
+		ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/movies/104", String.class);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
 
 	}
 	
-	@Test
+/*	@Test(expected = IllegalDateException.class)
+	@Ignore
 	public void testUpdateMovieInformationWithWrongReleaseDate(){
 		
 		String expectedReleaseDate="2000-08-08";
 		testRestTemplate.put("/movies/109?releaseDate=2000-08-08",null);
 		ResponseEntity<String> actualReleaseDate= testRestTemplate.getForEntity("/movies/105/releaseDate", String.class);
 		assertFalse(expectedReleaseDate.equals(actualReleaseDate));
-	}
-	
+	}*/
+	//test update release date
 	@Test
 	@Ignore
 	public void testUpdateMovieReleaseDate() {
@@ -186,6 +187,13 @@ public class TestCasesOfController {
 		ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/movies/105", String.class);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 	}
+	
+	/*@Test
+	public void testUpdateMovieWITHWRONGReleaseDate() {
+		testRestTemplate.put("/movies/105?releaseDate=2015-08-08", null);
+		ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/movies/105", String.class);
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+	}*/
 }
 
 

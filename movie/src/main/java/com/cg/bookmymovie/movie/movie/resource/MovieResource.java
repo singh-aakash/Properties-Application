@@ -52,25 +52,6 @@ public class MovieResource {
 		return new ResponseEntity<>(movie, HttpStatus.OK);
 	}
 
-	/*@PutMapping("/{movieId}")
-	public ResponseEntity<LocalDate> updateMovieReleaseDate(@PathVariable Integer movieId,
-			@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate releaseDate)  {
-
-		Optional<Movie> movie = movieService.getMovieById(movieId);
-		if (!movie.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-		else if(LocalDate.now().compareTo(releaseDate)>0)
-		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-			
-		movie.get().setReleaseDate(releaseDate);
-		movieService.addNewMovie(movie.get());
-		return new ResponseEntity<>(releaseDate, HttpStatus.OK);
-	}
-*/
 	@DeleteMapping("/{movieId}")
 	public ResponseEntity<String> deleteMovies(@PathVariable Integer movieId) {
 
@@ -80,7 +61,7 @@ public class MovieResource {
 		}
 
 		movieService.deleteMovies(movie.get());
-		return new ResponseEntity<>("Movie Deleted SuccessFully", HttpStatus.OK);
+		return new ResponseEntity<>("Movie Deleted SuccessFully", HttpStatus.OK) ;
 	}
 	
 	@GetMapping("/{movieId}/releaseDate")
@@ -90,12 +71,18 @@ public class MovieResource {
 	}
 
 	@PutMapping("/{movieId}")
-	public ResponseEntity<String> updateMovieReleaseDate(@PathVariable int movieId, @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate releaseDate) throws IllegalDateException {
+	public ResponseEntity<String> updateMovieReleaseDate(@PathVariable int movieId, @RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate releaseDate){
 		
 		Optional<Movie> movie = movieService.getMovieById(movieId);
 		if (!movie.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}	
+		else
+		 if(LocalDate.now().compareTo(releaseDate)>0)
+			{
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			 
 		movieService.updateMovieReleaseDate(movieId,releaseDate);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

@@ -14,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cg.bookmymovie.movie.movie.entity.Cast;
@@ -28,9 +27,6 @@ import com.cg.bookmymovie.movie.movie.service.MovieService;
 public class TestCaseOfServices {
 	@Autowired(required = true)
 	MovieService movieService;
-
-	@Autowired
-	TestRestTemplate testRestTemplate;
 
 	Movie movie2, movie3;
 
@@ -81,7 +77,7 @@ public class TestCaseOfServices {
 	@Test
 	@Ignore
 	public void testGetMoviesByRightId() {
-		assertEquals(movieService.getMovieById(103).get().getTitle(), movie2.getTitle());
+		assertEquals(movieService.getMovieById(103).get().getMovieId(), movie2.getMovieId());
 	}
 	
 	@Test
